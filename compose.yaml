@@ -1,0 +1,11 @@
+name: hugo-project
+
+services:
+  http:
+    image: nginx:latest
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_PORT=80
