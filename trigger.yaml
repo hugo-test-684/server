@@ -1,0 +1,8 @@
+steps:
+  - name: 'make_html'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        cd /root/server
+        docker compose run make_html
