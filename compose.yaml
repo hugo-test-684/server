@@ -4,14 +4,16 @@ services:
   http:
     image: nginx:latest
     volumes:
-      - ./html:/usr/share/nginx/html:ro
+      - ../html/public/:/usr/share/nginx/html/:ro
     ports:
       - "80:80"
     environment:
       - NGINX_PORT=80
+    depends_on:
+      - make_html
   make_html:
     build:
       context: ./
       dockerfile: ./make_html/Dockerfile
     volumes:
-      - ../html:/html
+      -  ../html:/root/html
