@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+CODENAME="$(awk -F= -- '/VERSION_CODENAME/{print $2}' /etc/os-release)"
+ARCH="$(dpkg --print-architecture)"
+PUBKEY="/etc/apt/keyrings/docker.asc"
+DOCKER_DEBREPO="https://download.docker.com/linux/debian"
+GH_ORG="https://github.com/hugo-test-684"
+apt update && \
+    apt upgrade --assume-yes
+apt install --assume-yes git ca-certificates wget
+install --mode=0755 --directory="/etc/apt/keyrings" &&  \
+    wget "https://download.docker.com/linux/debian/gpg" \
+         --output-document="${PUBKEY}" &&               \
+    chmod a+r "${PUBKEY}"
+printf "deb [arch=%s signed-by=%s] %s %s stable\n"   \
+       "${ARCH}"                                     \
+       "${PUBKEY}"                                   \
+       "${DOCKER_DEBREPO}"                           \
+       "${CODENAME}" |                               \
+    tee /etc/apt/sources.list.d/docker.list
+apt update &&                                         \
+    apt install docker-ce docker-ce-cli containerd.io \
+        docker-buildx-plugin docker-compose-plugin
+for repo in html server
+do git clone "${GH_ORG}/${repo}"
+done
+cd server
+docker compose build && \
+    docker compose up -d
