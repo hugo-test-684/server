@@ -1,8 +1,8 @@
 #!/bin/sh
 
-REPO_NAME="github_hugo-test-684_server"
+REPO_NAME="github_hugo-test-684_html"
 BRANCH_PATTERN="public"
-BUILD_CONFIG_FILE="trigger.yaml"
+BUILD_CONFIG_FILE="cloudbuilder.yaml"
 test -z $VM_NAME && printf "set bash variable \$VM_NAME before running\n" && exit 1
 gcloud config set compute/region us-central1
 gcloud config set compute/zone us-central1-f
